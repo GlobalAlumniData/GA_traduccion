@@ -39,12 +39,9 @@ if archivo is not None:
 
             if traducir:
                 with st.spinner('Traduciendo...'):
-                    for i in columnas:
-                        # Traducir y mantener comentarios en blanco
-                        datos.loc[:, i] = datos.loc[:, i].replace(np.nan, 'empty comment')
-                        datos.loc[:, i] = datos.loc[:, i].apply(traduccion)
-                        datos.loc[:, i] = datos.loc[:, i].replace('empty comment', np.nan)
-
+                    datos.loc[:, columnas] = datos.loc[:, columnas].applymap(traducir,
+                                                                             na_action='ignore')
+                    
         with col3:
             st.write('')
 
@@ -61,8 +58,7 @@ if archivo is not None:
                 datos_xlsx = to_excel(datos)
                 st.download_button(label='📥 Descargar datos',
                                    data=datos_xlsx,
-                                   file_name='traduccion.xlsx'
-                                   )
+                                   file_name='traduccion.xlsx')
 
             with col3:
                 st.write('')
