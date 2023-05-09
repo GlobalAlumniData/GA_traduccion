@@ -39,8 +39,10 @@ if archivo is not None:
 
             if traducir:
                 with st.spinner('Traduciendo...'):
-                    datos.loc[:, columnas] = datos.loc[:, columnas].applymap(traducir, na_action='ignore')
-                    
+                    for i in columnas:
+                        datos.loc[:, i] = datos[i].replace(np.nan, 'empty comment')
+                        datos.loc[:, i] = datos.loc[:, i].apply(traducir)
+                        datos.loc[:, i] = datos[i].replace('empty comment', np.nan)
         with col3:
             st.write('')
 
