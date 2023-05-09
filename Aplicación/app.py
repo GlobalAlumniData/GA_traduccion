@@ -39,8 +39,7 @@ if archivo is not None:
 
             if traducir:
                 with st.spinner('Traduciendo...'):
-                    datos.loc[:, columnas] = datos.loc[:, columnas].applymap(traducir,
-                                                                             na_action='ignore')
+                    datos.loc[:, columnas] = datos.loc[:, columnas].applymap(traducir, na_action='ignore')
                     
         with col3:
             st.write('')
