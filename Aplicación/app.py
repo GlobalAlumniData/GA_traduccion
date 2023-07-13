@@ -1,5 +1,6 @@
 import openpyxl
 import numpy as np
+
 import streamlit as st
 from funciones import *
 
@@ -15,8 +16,10 @@ archivo = st.file_uploader('Proporciona el archivo a leer:')
 if archivo is not None:
     workbook = openpyxl.load_workbook(archivo)
     hojas = workbook.sheetnames
-    hoja = st.selectbox('Elige hoja del excel',
-                        ['<Selecciona una opción>'] + hojas)
+    hoja = st.selectbox(
+        'Elige hoja del excel',
+        ['<Selecciona una opción>'] + hojas
+    )
 
     # Enseñar datos para la hoja seleccionada
     if hoja != '<Selecciona una opción>':
@@ -25,39 +28,33 @@ if archivo is not None:
         # Muestra los datos
         st.write('Cinco primeras observaciones de los datos:')
         st.write(datos.head())
-        columnas = st.multiselect('¿Qué columna(s) quieres traducir?',
-                                  datos.columns
-                                  )
+        columnas = st.multiselect(
+            '¿Qué columna(s) quieres traducir?',
+            datos.columns
+        )
         st.write('')
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.write('')
-
+        _, col2, _ = st.columns(3)
         with col2:
             # Botón para empezar traducción
             traducir = st.button('Traducir testimonios')
 
             if traducir:
                 with st.spinner('Traduciendo...'):
-                    datos.loc[:, columnas] = datos.loc[:, columnas].applymap(traduccion,
-                                                                             na_action='ignore')
-        with col3:
-            st.write('')
+                    datos.loc[:, columnas] = datos.loc[:, columnas].applymap(
+                        traduccion,
+                        na_action='ignore'
+                    )
 
         if traducir:
             # Enseñar resultados
             st.write(datos.head())
 
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.write('')
-
+            _, col2, _ = st.columns(3)
             with col2:
                 # Permitir descarga de datos
                 datos_xlsx = to_excel(datos)
-                st.download_button(label='📥 Descargar datos',
-                                   data=datos_xlsx,
-                                   file_name='traduccion.xlsx')
-
-            with col3:
-                st.write('')
+                st.download_button(
+                    label='📥 Descargar datos',
+                    data=datos_xlsx,
+                    file_name='traduccion.xlsx'
+                )
