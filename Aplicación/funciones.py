@@ -3,13 +3,13 @@ import pandas as pd
 from io import BytesIO
 
 
-def traduccion(x):
+def traduccion(x: str) -> str:
     """Traduce textos al inglés"""
     x = GoogleTranslator(source='auto', target='en').translate(x)
     return x
 
 
-def to_excel(dataframe):
+def to_excel(dataframe: pd.DataFrame) -> bytes:
     """Transforma un pandas DataFrame a excel"""
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
